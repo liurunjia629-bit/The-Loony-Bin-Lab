@@ -10,6 +10,8 @@ import {mutationReport} from './mutation';
 import {MutationObservation} from './MutationObservation';
 import {certificate,download} from './export';
 import './style.css';
+import {BrandLogo} from './BrandLogo';
+import './brand.css';
 import './v11.css';
 import {Home} from './Home';
 type Page='home'|'quiz'|'analysis'|'result'|'collection'|'match';
@@ -32,7 +34,7 @@ function App(){
  const ch=characters[result];const m=match(self,friend);const triple=record.eggs.includes('triple')||hasTriple(record.history);const report=diagnosis(values);const mutation=mutationReport(record.history);const shownEggs=latestEggs.filter(id=>id!=='triple'||mutation?.kind!=='resident');
  const saveMutation=async()=>{if(!mutation||busy)return;setBusy(true);try{const {mutationCertificate}=await import('./mutation-export');const file=await mutationCertificate(mutation);download(file);if(window.innerWidth<=600)setImagePreview({url:URL.createObjectURL(file),file});notify('观察报告已生成，请查看下载文件。')}catch{notify('报告生成失败，请重试或使用系统浏览器。')}finally{setBusy(false)}};
  const dossier=(id:number)=>{const c=characters[id];return <><p className="declaration">「{c.claim}」</p><div className="tags">{c.traits.map(t=><span key={t}>{t}</span>)}</div><dl className="dossier">{[['特殊技能',c.skill],['致命弱点',c.weak],['荒诞职业',c.job],['博士建议',c.advice]].map(([k,v])=><div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl></>};
- return <><header><button className="brand" onClick={()=>go('home')} aria-label="返回首页"><span className="brand-mark">✳</span><span>不正常人类研究所<small>INSTITUTE OF UNUSUAL HUMANS</small></span></button><nav><span className="open"><i/> 营业中 · 理智休假</span><button className="nav-link" onClick={()=>go('collection')}>废物图鉴 <span>↗</span></button></nav></header>
+ return <><header><button className="brand" onClick={()=>go('home')} aria-label="返回首页"><BrandLogo/></button><nav><span className="open"><i/> 营业中 · 理智休假</span><button className="nav-link" onClick={()=>go('collection')}>废物图鉴 <span>↗</span></button></nav></header>
  <main>
  {page==='home'&&<Home inviter={invite} initialLine={reaction} onStart={start} onPreview={id=>{go('collection');setDetail(id)}} onCollection={()=>go('collection')}/>}
  {page==='quiz'&&deck.length>0&&<section className="quiz entrance"><div className="quiz-meta"><button className="text-link" onClick={()=>go('home')}>← 退出鉴定</button><span>样本采集中 <b>{String(answers.length+1).padStart(2,'0')}</b> / 10</span></div><div className="progress"><div style={{width:`${answers.length*10}%`}}/></div><div className="quiz-layout"><aside><Drawing doctor mood={mood}/><div className="speech small" aria-live="polite">{reaction}</div><p className="tiny">不要过度思考。<br/>博士也没有。</p></aside><div className="question-sheet" key={answers.length}><p className="eyebrow">QUESTION {String(answers.length+1).padStart(2,'0')} / 凭第一直觉</p><h2>{questions[deck[answers.length]].text}</h2><div className="options">{questions[deck[answers.length]].options.map((o,i)=><button disabled={selected!==null} className={selected===i?'chosen':''} key={i} onClick={()=>choose(i)}><span>{'ABCD'[i]}</span>{o.text}<b>↗</b></button>)}</div><p className="tiny">你的每个选择，都将成为本所不靠谱的研究材料。</p></div></div></section>}

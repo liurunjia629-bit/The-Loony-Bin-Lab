@@ -1,0 +1,23 @@
+.brand-logo{display:inline-flex;align-items:center;gap:11px;text-align:left;flex-shrink:0;vertical-align:middle}
+.brand-logo-icon{display:block;flex:none;overflow:visible;aspect-ratio:1/1}
+.brand-logo-wordmark{display:block;white-space:nowrap;line-height:1.35}
+.brand-logo-wordmark strong{display:block;font-size:15px;font-weight:800;letter-spacing:.8px}
+.brand .brand-logo-wordmark small,.brand-logo-wordmark small{display:block;font-size:8px;font-weight:500;letter-spacing:1.5px;margin-top:5px;line-height:1.4}
+header .brand{min-width:0;flex-shrink:0}
+header nav{flex-shrink:0}
+@media(max-width:600px){
+ header{padding:18px 16px;gap:14px}
+ header .brand-logo{gap:8px}
+ header .brand-logo-icon{width:34px!important;height:34px!important}
+ .brand-logo-wordmark strong{font-size:13px;letter-spacing:.5px}
+ .brand .brand-logo-wordmark small{font-size:7px;letter-spacing:1.1px;margin-top:4px}
+ header .nav-link{white-space:nowrap;font-size:11px}
+ header .nav-link span{margin-left:5px}
+}
+@media(max-width:350px){
+ header{padding-left:12px;padding-right:12px;gap:10px}
+ header .brand-logo{gap:7px}
+ header .brand-logo-icon{width:32px!important;height:32px!important}
+ .brand-logo-wordmark strong{font-size:12px;letter-spacing:.4px}
+ .brand .brand-logo-wordmark small{font-size:6.5px;letter-spacing:1px}
+}

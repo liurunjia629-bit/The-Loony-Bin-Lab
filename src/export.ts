@@ -3,6 +3,7 @@ import {Drawing} from './art';
 import {characters,attrs} from './data';
 import {match} from './engine';
 import {GAME_URL,inviteUrl} from './links';
+import {BRAND_ENGLISH} from './brand-mark';
 import {wrapText} from './text-layout';
 import {diagnosis} from './diagnosis';
 export const FONT='"PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Heiti SC", sans-serif';
@@ -16,7 +17,7 @@ export async function certificate(id:number,values:number[],friend?:number):Prom
  const text=(s:string,x:number,y:number,size=28,color='#242424',align:CanvasTextAlign='left')=>commands.push(()=>{c.fillStyle=color;c.font=`${size>=40?'bold ':''}${size}px ${FONT}`;c.textAlign=align;c.textBaseline='alphabetic';c.fillText(s,x,y)});
  const paragraph=(s:string,y:number,size=28,center=false)=>{c.font=`${size>=40?'bold ':''}${size}px ${FONT}`;const lines=wrapText(s,710-size,t=>c.measureText(t).width);for(const line of lines){text(line,center?450:95,y,size,'#242424',center?'center':'left');y+=size*1.65}return y};
  const art=async(n:number,x:number,y:number,w:number)=>{const img=await loadDrawing(n);commands.push(()=>c.drawImage(img,x,y,w,w*280/300))};
- text('你是什么品种的废物？',450,100,43,'#242424','center');text('WHAT KIND OF USELESS ARE YOU?',450,142,19,'#777','center');text('不正常人类研究所 / POTATO LAB',450,185,22,'#777','center');
+ text('你是什么品种的废物？',450,100,43,'#242424','center');text('WHAT KIND OF USELESS ARE YOU?',450,142,19,'#777','center');text(`不正常人类研究所 / ${BRAND_ENGLISH}`,450,185,22,'#777','center');
  commands.push(()=>{c.strokeStyle='#242424';c.lineWidth=2;c.beginPath();c.moveTo(75,215);c.lineTo(825,215);c.stroke()});let y:number;
  if(friend===undefined){const ch=characters[id];text(`人格档案  NO. ${String(id+1).padStart(3,'0')}`,450,268,23,'#777','center');text(ch.name,450,340,64,'#242424','center');await art(id,245,350,410);y=paragraph(`「${ch.claim}」`,775,29,true);y=paragraph(ch.traits.join('  /  '),y+12,24,true)+30;
   for(const [label,value] of [['特殊技能',ch.skill],['致命弱点',ch.weak],['荒诞职业',ch.job],['生活建议',ch.advice]]){text(label,95,y,22,'#FF6555');y=paragraph(value,y+42,28)+22}
