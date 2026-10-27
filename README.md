@@ -53,7 +53,23 @@ npm run preview
 
 ## GitHub Pages
 
-项目配置了 `base: '/The-Loony-Bin-Lab/'`，不使用路径路由。上传到 GitHub 仓库后，在 Settings → Pages 选择 GitHub Actions，附带工作流会测试、构建并部署到 Pages。首次启用 Pages 需仓库拥有者设置；本次没有操作你的 GitHub 账号或发布到线上。
+公开网站：https://liurunjia629-bit.github.io/The-Loony-Bin-Lab/
+
+源码仓库：https://github.com/liurunjia629-bit/The-Loony-Bin-Lab
+
+项目配置了 `base: '/The-Loony-Bin-Lab/'`，不使用路径路由。GitHub Actions 已成功完成测试、构建和 Pages 部署。页面之间切换不改变 URL 路径，刷新会回到首页，不需要额外的404重定向。
+
+以后在 Codex 修改项目后，先本地检查，再将改动提交并推送到此仓库的 `main`：
+
+```sh
+npm test
+npm run build
+git add .
+git commit -m "Update game"
+git push origin main
+```
+
+只有推送才触发 `.github/workflows/pages.yml`；本地保存文件不会自动更新线上。可在仓库 Actions 中查看运行结果。使用新电脑时先 `git clone https://github.com/liurunjia629-bit/The-Loony-Bin-Lab.git`，再在该目录里开发。通过 Codex 的 GitHub 连接器也可以把审阅过的更新提交到这个仓库。
 
 也可把 `dist/` 目录整体部署到任意静态托管服务。不要上传 `node_modules/`。
 
