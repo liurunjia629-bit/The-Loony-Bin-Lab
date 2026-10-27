@@ -15,7 +15,7 @@ const idleLines=['你不动，我差点以为我们在合影。','慢慢来。�
 const intros:Record<number,string>={2:'规则看了，但猫有自己的版本。',3:'别催，池塘暂时没有紧急事项。',4:'正在角落进行无声的光合作用。',8:'熟人限定，陌生人请先预热。'};
 const pick=(lines:string[],previous='')=>{const options=lines.filter(line=>line!==previous);return options[Math.floor(Math.random()*options.length)]};
 
-export function Home({initialLine,onStart,onPreview,onCollection}:{initialLine:string;onStart:()=>void;onPreview:(id:number)=>void;onCollection:()=>void}){
+export function Home({initialLine,onStart,onPreview,onCollection,inviter=null}:{initialLine:string;onStart:()=>void;onPreview:(id:number)=>void;onCollection:()=>void;inviter?:number|null}){
  const [line,setLine]=useState(initialLine),[mood,setMood]=useState('welcome'),[starting,setStarting]=useState(false),[poke,setPoke]=useState(0),[footnote]=useState(()=>pick(footnotes));
  const doctor=useRef<HTMLButtonElement>(null),lastActivity=useRef(Date.now()),clicks=useRef({time:0,count:0}),startLock=useRef(false);
  useEffect(()=>{
@@ -33,6 +33,7 @@ export function Home({initialLine,onStart,onPreview,onCollection}:{initialLine:s
  const tapDoctor=()=>{if(startLock.current)return;const now=Date.now();const count=now-clicks.current.time<1500?clicks.current.count+1:1;clicks.current={time:now,count};setPoke(n=>n+1);setMood(count>=3?'speechless':'shock');setLine(count>=7?'再戳就要按土豆泥的价格收费了。':count>=5?'我不是触屏电梯，不用一直按。':count>=3?'第三次了。你是在鉴定我，还是在给土豆去皮？':pick(reactions,line))};
  const begin=()=>{if(startLock.current)return;startLock.current=true;setLine('请把理智留在门口。好，开始鉴定！');setMood('announce');setStarting(true)};
  return <section className={`home entrance ${starting?'home-starting':''}`} aria-busy={starting}>
+  {inviter!==null&&<aside className="invite-banner"><Drawing id={inviter}/><div><b>{characters[inviter].name}邀请你来鉴定</b><p>先回答10道题，看看你们能组成什么奇怪搭档。无需登录。</p></div></aside>}
   <div className="edition">人格研究计划 / VOL. 001 <span>100% 不科学</span></div>
   <div className="hero"><div className="hero-copy"><p className="eyebrow"><span/> A VERY UNOFFICIAL PERSONALITY TEST</p><h1>你是什么<br/>品种的<span className="red-word">废物<svg viewBox="0 0 260 24" aria-hidden="true"><path d="M5 15Q99 0 253 13M15 22Q135 12 238 22"/></svg></span><span className="question">？</span></h1><p className="subtitle">一场极其不严谨的人格鉴定。</p><p className="intro">有人活成了一束光，有人活成了一颗土豆。<br/>没关系，先来认领一下你的物种。</p><div className="home-actions"><button className="primary start-button" disabled={starting} onClick={begin}>{starting?'博士准备中…':'开始鉴定'} <span>↗</span></button><span className="time-note">10 道怪问题<br/>约 2 分钟，放心浪费</span></div><p className="tiny">无需登录 · 没有标准答案 · 放下你的包袱</p></div>
   <div className="hero-art"><div className="speech" role="status" aria-live="polite" aria-atomic="true">{line}</div><span className="orbit one">正常？<br/>不在业务范围内。</span><span className="spark">✳</span><button ref={doctor} className="doctor-button" onClick={tapDoctor} disabled={starting} aria-label="戳一戳土豆博士" aria-describedby="doctor-hint"><span key={poke} className={poke?'doctor-poke':'doctor-rest'}><Drawing doctor mood={mood}/></span></button><span className="doctor-label">Dr. Potato <span>土豆博士</span></span><span className="annotation" id="doctor-hint">↑ 戳它。它看起来很闲。</span><span className="seal">不 正 常<br/><b>合 格</b><br/>研究所认证</span></div></div>

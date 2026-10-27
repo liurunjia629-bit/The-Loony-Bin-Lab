@@ -1,3 +1,4 @@
+import {optionReplies} from './option-replies.ts';
 export const attrs=['脑洞值','摆烂值','社交值','反骨值','内耗值','行动力'];
 export type Character={name:string;claim:string;traits:string[];skill:string;weak:string;job:string;advice:string;profile:number[];color:string};
 const raw:[string,string,string,string,string,string,string,number[],string][]=[
@@ -14,7 +15,7 @@ const raw:[string,string,string,string,string,string,string,number[],string][]=[
 ['健忘金鱼','烦恼有保质期，大约七秒。','随性 / 快乐重启 / 灵感闪现','把旧笑话当新笑话再笑一次','走进房间忘了为什么','记忆回收站管理员','写下来，比对自己喊记住靠谱。',[4,3,4,0,0,2],'#FFB88F'],
 ['摸鱼树懒','忙碌是一种表演，我有艺术天赋。','节能 / 精准避险 / 松弛感','在工作缝隙开辟热带雨林','突然被问具体进度','办公室生态保护员','休息很好，记得保存文档。',[2,5,2,3,1,2],'#C4BD99']];
 export const characters:Character[]=raw.map(([name,claim,t,skill,weak,job,advice,profile,color])=>({name,claim,traits:t.split(' / '),skill,weak,job,advice,profile,color}));
-export type Option={text:string;weights:[number,number][]};
+export type Option={text:string;weights:[number,number][];reply:string};
 export type Question={text:string;options:Option[]};
 // Each answer affects only two traits. Question sets vary, but scoring is deterministic.
 const q:[string,string,string,string,string,number,number,number,number][]=[
@@ -49,5 +50,5 @@ const q:[string,string,string,string,string,number,number,number,number][]=[
 ['书架上的书投诉你只买不看。','向它们展示我的购物车','承诺从今天开始读两页','解释书也是室内绿植','邀请朋友来开读书谈判会',1,5,0,2],
 ['鉴定结束，博士问你还有什么要补充。','这个研究所经费哪里来的','能不能领完证就躺下','我觉得博士也该测一下','想知道我刚才有没有选错',0,1,3,4]
 ];
-export const questions:Question[]=q.map(([text,a,b,c,d,...indices])=>({text,options:[a,b,c,d].map((text,i)=>({text,weights:[[indices[i],3],[(indices[i]+(i%2?2:3))%6,1]]}))}));
+export const questions:Question[]=q.map(([text,a,b,c,d,...indices],qi)=>({text,options:[a,b,c,d].map((text,i)=>({text,reply:optionReplies[qi][i],weights:[[indices[i],3],[(indices[i]+(i%2?2:3))%6,1]]}))}));
 export const reactions=['这个答案很有研究价值，虽然我也不知道为什么。','别紧张，我们这里没有正常人。','已记录。土豆听了都点头。','你的精神状态，领先研究所两个版本。','嗯……这超出了我的淀粉储备。','这个选择，很有你自己的道理。'];
