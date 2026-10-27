@@ -1,0 +1,44 @@
+/* Homepage-only interaction layer. Existing composition and palette stay intact. */
+.home .doctor{animation:none}
+.home .doctor-button{--look-x:0px;--look-y:0px;touch-action:manipulation}
+.home .doctor-button>span{display:block;transform-origin:50% 80%}
+.home .doctor-button:hover{transform:none}
+.home .doctor-gaze{transform:translate(var(--look-x),var(--look-y));transition:transform .16s ease-out}
+.home .doctor-blink{transform-box:fill-box;transform-origin:center;animation:doctor-blink 7.3s infinite}
+.home .doctor-poke{animation:doctor-poke .48s ease-out}
+.home .doctor-button:active{transform:scale(.98)}
+.home .speech{min-height:74px;display:flex;align-items:center}
+.home .start-button{white-space:nowrap;transform-origin:50% 80%;min-width:202px}
+.home .start-button:active{transform:translate(3px,4px) scale(.94,.9);box-shadow:0 0 0 #242424}
+.home-starting .start-button{animation:start-squish .6s cubic-bezier(.2,.8,.3,1);opacity:1}
+.home-starting .hero-copy{animation:prepare-entry 1s ease both}
+.home-starting .doctor-rest,.home-starting .doctor-poke{animation:doctor-ready .75s ease both}
+.home-starting .speech{border-color:#ff6555}
+.home .mini-creatures{position:relative;flex-shrink:1}
+.home .creature-preview{position:relative;display:block;width:25%;padding:0;min-width:0;touch-action:manipulation}
+.home .creature-preview>.drawing{width:100%;transition:transform .25s ease;transform-origin:50% 90%}
+.home .creature-preview:nth-child(2)>.drawing{animation:preview-rest 14s 5s infinite}
+.home .creature-preview>.drawing:hover{transform:none}
+.home .creature-preview:active>.drawing{transform:scale(.92);animation:none}
+.preview-caption{position:absolute;bottom:94%;left:50%;transform:translate(-50%,5px);width:180px;padding:11px 13px;background:#f8f5ef;border:1px solid #242424;border-radius:5px 3px 7px 2px;text-align:left;box-shadow:2px 2px 0 #242424;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .16s,transform .16s;z-index:5}
+.preview-caption b{display:block;font-size:12px;margin-bottom:5px}.preview-caption>span{font-size:10px;line-height:1.8;display:block;color:#77746e}
+.creature-preview:focus-visible .preview-caption{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.home .index{white-space:nowrap}
+.home-footnote{text-align:center;font-size:10px;color:#77746e;line-height:1.8;min-height:18px;margin:22px 0 0}
+.home .disclaimer{margin-top:8px}
+@media(hover:hover) and (pointer:fine){
+ .home .doctor-button:hover .doctor{animation:doctor-hover .8s ease-in-out infinite alternate}
+ .home .start-button:hover:not(:disabled){transform:translate(-2px,-2px) rotate(-2deg)}
+ .home .creature-preview:hover>.drawing,.home .creature-preview:focus-visible>.drawing{animation:none;transform:translateY(-6px) rotate(-5deg)}
+ .creature-preview:hover .preview-caption{opacity:1;visibility:visible;transform:translate(-50%,0)}
+}
+@keyframes doctor-blink{0%,39%,42%,77%,80%,83%,100%{transform:scaleY(1)}40.5%,78.5%,81.5%{transform:scaleY(.08)}}
+@keyframes doctor-hover{from{transform:rotate(-1.3deg)}to{transform:rotate(1.3deg) translateY(-2px)}}
+@keyframes doctor-poke{0%,100%{transform:scale(1)}30%{transform:scale(1.035,.95) rotate(-2deg)}65%{transform:scale(.985,1.025) rotate(1deg)}}
+@keyframes start-squish{0%{transform:scale(1)}22%{transform:translateY(4px) scale(.94,.88)}55%{transform:translateY(-2px) scale(1.025,1.04)}100%{transform:scale(1)}}
+@keyframes prepare-entry{0%,70%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+@keyframes doctor-ready{35%{transform:rotate(-4deg) translateY(-5px)}70%{transform:rotate(2deg)}100%{transform:rotate(0)}}
+@keyframes preview-rest{0%,3%,9%,100%{transform:translateY(0)}6%{transform:translateY(-3px) rotate(2deg)}}
+@media(max-width:850px){.home .start-button{min-width:180px}.preview-caption{width:155px}}
+@media(max-width:600px){.home .speech{min-height:62px}.home .start-button{min-width:170px}.home-footnote{font-size:9px;margin-top:19px;padding:0 6px}.preview-caption{width:145px}.creature-preview:first-child .preview-caption{left:0;transform:translate(0,5px)}.creature-preview:first-child:focus-visible .preview-caption{transform:translate(0,0)}.creature-preview:last-child .preview-caption{left:auto;right:0;transform:translate(0,5px)}.creature-preview:last-child:focus-visible .preview-caption{transform:translate(0,0)}}
+@media(prefers-reduced-motion:reduce){.home .doctor-gaze{transform:none}.home *, .home *:before,.home *:after{animation:none!important;transition:none!important}.home-starting .hero-copy{opacity:1;transform:none}.home .doctor-button:active,.home .start-button:active,.home .creature-preview:active>.drawing{transform:none}.home .creature-preview:hover>.drawing,.home .start-button:hover:not(:disabled){transform:none}}
